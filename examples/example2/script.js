@@ -1,5 +1,8 @@
 var words = new Map();
-
+var canvas;
+var myDataFrame;
+var myLegend;
+var myCakePlot;
 
 function getWordsMap( text,wordsMap){
     var splitedStr = text.split(' ');
@@ -29,41 +32,41 @@ function getSpecyficLenghtWordsCount(text,wordSize){
 
 function formFunc(){
 
-    var canvas = document.getElementById('canvas');
-    var myDataFrame = new DataFrame();
-    
-
-    
-
     if(!document.forms[0].checkbox.checked){
         words = new Map();
+        myDataFrame.clear();
     }
-
-    // var wordSize;
-    // if((wordSize = prompt("podaj długość wyrazów")) == String){
-    //     if(isNaN(string)){
-    //         wordSize = parseInt(wordSize);
-    //     }
-    // }
-
-
 
     var str = document.forms[0].textarea.value;
     words = getWordsMap(str,words);
     var resultDiv = document.getElementById("result");
     resultDiv.innerHTML = ""
     
-    // if( !isNaN( wordSize)){
-    //     resultDiv.innerHTML = "Wyraz o podanej długości wystąpił " + getSpecyficLenghtWordsCount(str,wordSize) + "razy.<br>"
-    // }
     
     for (let [key, value] of words) {
         resultDiv.innerHTML+= key + ":" + value + "<br>"
         myDataFrame.add(key,parseInt(value));
 
     }
-
-    var myCakePlot = new CakePlot(canvas,myDataFrame,true);
+    
+    
+    
 }
 
+
+requirejs.config({
+    baseUrl : '../../',
+    bundles: {
+        'modules': ['MyPlotLiblary', 'Legend','DataFrame','BarGraph']
+    }
+})
+
+require(["Source/MyPlotLiblary"], function (MyPlotLiblary) {
+
+
+    canvas = document.getElementById('canvas');
+    myDataFrame = new MyPlotLiblary.DataFrame();
+    myLegend = new  MyPlotLiblary.Legend();
+    myCakePlot = new MyPlotLiblary.CakePlot(canvas,myDataFrame,myLegend);
+});
 document.forms[0].button.addEventListener("click",formFunc);

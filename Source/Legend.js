@@ -1,11 +1,12 @@
+
+define('Source/Legend', [],function(){
+
+
 class Legend{
     constructor(canvas,fontSize){
         this.fontSize = (typeof fontSize !== 'undefined') ?  fontSize : 15;
         this.data = {};
         this.canvas = canvas;
-        
-
-
     }
 
     add(element,color){
@@ -32,10 +33,7 @@ class Legend{
         
         var legendWidth  = maxTextLenght +  5*fontMarginLeft  + this.fontSize;
         var legendHeight = (this.fontSize + fontMarginTop) * Object.keys(this.data).length + fontMarginTop;
-        console.log(this.data);
-        
-
-        
+        console.log(this.data); 
         
         context.beginPath();
         context.moveTo(canvasWidth,canvasHeight);
@@ -58,7 +56,7 @@ class Legend{
 
         for(var key in this.data){ 
             console.log(actualHeight);
-            context.fillText(key,canvasWidth - legendWidth + fontMarginLeft,canvasHeight - legendHeight + actualHeight);
+            context.fillText(key,canvasWidth - legendWidth + fontMarginLeft, -5 + canvasHeight - legendHeight + actualHeight);
             context.beginPath();
             context.moveTo(canvasWidth - legendWidth + 4*fontMarginLeft + maxTextLenght,canvasHeight - legendHeight + actualHeight);
             context.lineTo(canvasWidth - legendWidth + 4*fontMarginLeft + maxTextLenght + this.fontSize,canvasHeight - legendHeight + actualHeight);
@@ -75,9 +73,17 @@ class Legend{
             actualHeight+= fontMarginTop + this.fontSize;
         }
 
+        this.data = {}
     }
 
 
 
 
 }
+
+    return{
+        Legend:Legend
+    }   
+
+
+});

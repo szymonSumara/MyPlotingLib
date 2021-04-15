@@ -1,16 +1,20 @@
- class CakePlot{
-    constructor(canvas,dataFrame,withLegend){
-        withLegend = (typeof withLegend !== 'undefined') ?  withLegend : false;
+define('Source/CakePlot', [],function(){
+
+class CakePlot{
+    constructor(canvas,dataFrame,legend){
 
         this.canvas = canvas;
         this.dataFrame = dataFrame;
         this.dataFrame.addObserver(this);
-        this.haveLegend = withLegend;
         this.legend = null;
 
 
-        if(withLegend){
-            this.legend = new Legend(this.canvas,30);
+        if(legend != undefined){
+            this.legend = legend;
+            this.haveLegend = true;
+        }
+        else{
+            this.haveLegend = false;
         }
         
         this.updateContent();
@@ -18,7 +22,7 @@
 
     updateContent(){
         var context = canvas.getContext('2d');
-
+        context.clearRect(0, 0, canvas.width, canvas.height);
         var width = canvas.width;
         var height = canvas.height;
 
@@ -39,6 +43,8 @@
 
         for(var key in data){
         var positionY = height/2;
+            
+            var randomColor = Math.floor(Math.random()*16777215).toString(16);
 
             console.log(actualRadius,deg*data[key])
             context.beginPath();
@@ -46,7 +52,7 @@
             context.lineTo(positionX,positionY);
             context.closePath();
 
-            var randomColor = Math.floor(Math.random()*16777215).toString(16);
+            
 
             context.fillStyle = '#' + randomColor;
             context.fill();
@@ -70,4 +76,9 @@
 
 
 }
+return{
+    CakePlot:CakePlot
+}
 
+
+});

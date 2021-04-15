@@ -1,72 +1,20 @@
-var words = new Map();
-var canvas;
-var myDataFrame;
-var myLegend;
-var myCakePlot;
-
-function getWordsMap( text,wordsMap){
-    var splitedStr = text.split(' ');
-    splitedStr.forEach(function(element) {
-        if(words.has(element)){
-            words.set(element,words.get(element) + 1);
-        }
-        else{
-            words.set(element,1);  
-        }
-    });
-
-    return wordsMap;
-} 
-
-function getSpecyficLenghtWordsCount(text,wordSize){
-    var numberOfSpecyficLenWords = 0;
-    var splitedStr = text.split(' ');
-    splitedStr.forEach(function(element) {
-            if(element.length == wordSize){
-                numberOfSpecyficLenWords+=1;
-            }
-        
-    });
-    return numberOfSpecyficLenWords;
-}
-
-function formFunc(){
-
-    if(!document.forms[0].checkbox.checked){
-        words = new Map();
-        myDataFrame.clear();
-    }
-
-    var str = document.forms[0].textarea.value;
-    words = getWordsMap(str,words);
-    var resultDiv = document.getElementById("result");
-    resultDiv.innerHTML = ""
-    
-    
-    for (let [key, value] of words) {
-        resultDiv.innerHTML+= key + ":" + value + "<br>"
-        myDataFrame.add(key,parseInt(value));
-
-    }
-    
-    
-    
-}
-
-
 requirejs.config({
     baseUrl : '../../',
-    bundles: {
-        'modules': ['MyPlotLiblary', 'Legend','DataFrame','BarGraph']
-    }
+
 })
 
+var canvas = document.getElementById('canvas');
+
 require(["Source/MyPlotLiblary"], function (MyPlotLiblary) {
+     var myDataFrame = new MyPlotLiblary.DataFrame();
+     myDataFrame.add("a",50)
+     myDataFrame.add("b",30)
+     myDataFrame.add("c",10)
+     myDataFrame.add("d",150)
+     myDataFrame.add("e",120)
 
+    var myLegend = new MyPlotLiblary.Legend(canvas,20);
 
-    canvas = document.getElementById('canvas');
-    myDataFrame = new MyPlotLiblary.DataFrame();
-    myLegend = new  MyPlotLiblary.Legend();
-    myCakePlot = new MyPlotLiblary.CakePlot(canvas,myDataFrame,myLegend);
-});
-document.forms[0].button.addEventListener("click",formFunc);
+    var myPlot  = new MyPlotLiblary.BarGraph(canvas, myDataFrame,myLegend);
+})
+

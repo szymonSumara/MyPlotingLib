@@ -23,6 +23,6 @@ require(["Source/MyPlotLiblary"], function (MyPlotLiblary) {
 
 ```
 
-Result:
+
 ![BarGraph](/barGraphExample.png)
-Format: ![Alt Text](url)
+
